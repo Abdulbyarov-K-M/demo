@@ -16,9 +16,7 @@ using namespace std; // std - пространство имём, в которо
 * @param z значение константы 
 * @return Результат вычисления переменной a
 */
-float find_a(float x, float y, float z) { // Функция , возвращающая число с плавающей точкой а, принимает 3 параметра (x,y,z)
-   return 2*cos(x-M_PI/6); 
-}
+float find_a(float x, float y, float z);
 //----------------------------------------------------------------------------------------------------
 /*
 * @brief Функция для вычисления значения переменной
@@ -27,9 +25,7 @@ float find_a(float x, float y, float z) { // Функция , возвращаю
 * @param z значение константы
 * @return Результат вычисления переменной b
 */
-float find_b(float x, float y, float z) {
-   return 1 + (pow(z,2)/(3+(pow(z,2))/5));
-}
+float find_b(float x, float y, float z);
 //----------------------------------------------------------------------------------------------------
 int main()
 {
@@ -41,4 +37,13 @@ int main()
    cout << "а равняется: " << find_a(x, y, z) << endl; // cout - оператор вывода.
    cout << "b равняется: " << find_b(x, y, z) << endl;
 
+}
+
+float find_a(float x, float y, float z) 
+{ // Функция , возвращающая число с плавающей точкой а, принимает 3 параметра (x,y,z)
+   return 2*cos(x-M_PI/6); 
+}
+
+float find_b(float x, float y, float z) {
+   return 1 + (pow(z,2)/(3+(pow(z,2))/5));
 }
