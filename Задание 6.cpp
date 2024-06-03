@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <climits>
 using namespace std;
 
 /**
@@ -57,7 +58,7 @@ void checkRange(const int min, const int max);
  * @param n Размер массива.
  * @return Сумма элементов массива с нечетными значениями.
  */
-int findSumOfOddValues(int arr[], int n);
+int findSumOfOddValues(const int arr[], int n);
 
 /**
  * @brief заменяет второй элемент массива на максимальный среди отрицательных.
@@ -65,7 +66,7 @@ int findSumOfOddValues(int arr[], int n);
  * @param arr Массив целых чисел.
  * @param n Размер массива.
  */
-void replaceSecondWithMaxNegative(const int arr[],const int n);
+void replaceSecondWithMaxNegative(int arr[], int n);
 
 /**
  * @brief  выводит индексы элементов массива, значения которых больше заданного числа A.
@@ -73,7 +74,7 @@ void replaceSecondWithMaxNegative(const int arr[],const int n);
  * @param n Размер массива.
  * @param a Заданное число a.
  */
-void printIndexesGreaterThana(const int arr[],const  int n, const  int a);
+void printIndexesGreaterThana(const int arr[], const int n, const int a);
 
 /**
  * @brief заполнение массива вручную
@@ -88,11 +89,11 @@ void fillArray(int* arr, const int n, const int min, const int max);
 * @brief точка входа в программу
 * @return 0 - если программма выполнена корректно, инече -1
 */
-int main() {
+int main() 
+{
     setlocale(LC_ALL, "Russian");
     int n = getSize();
     int* arr = new int[n];
-
     cout << "Введите минимальное и максимальное значение диапазона: ";
     int minValue = getNumber();
     int maxValue = getNumber();
@@ -150,21 +151,23 @@ int getNumber() {
     int number;
     cin >> number;
     if (cin.fail()) {
-        cout << "Неправильный ввод данных";
-        abort();
+        cin.clear(); // Очистка флагов ошибки
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Игнорирование оставшегося ввода
+        cout << "Неправильный ввод данных. Попробуйте снова: ";
+        return getNumber(); // Рекурсивный вызов функции для повторного ввода
     }
     return number;
 }
 
 void printArray(const int* arr, const int n) {
-    for (size_t i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         cout << "arr[" << i << "] = " << arr[i] << endl;
     }
 }
 
 void fillArrayRandom(int* arr, const int n, const int min, const int max) {
-    srand(time(0));
-    for (size_t i = 0; i < n; i++) {
+    srand(static_cast<unsigned int>(time(0))); // Инициализация генератора случайных чисел
+    for (int i = 0; i < n; i++) {
         arr[i] = rand() % (max - min + 1) + min;
     }
 }
@@ -176,9 +179,9 @@ void checkRange(const int min, const int max) {
     }
 }
 
-int findSumOfOddValues(int arr[], int n) {
+int findSumOfOddValues(const int arr[], int n) {
     int sum = 0;
-    for (size_t = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         if (arr[i] % 2 != 0) {
             sum += arr[i];
         }
@@ -187,37 +190,42 @@ int findSumOfOddValues(int arr[], int n) {
 }
 
 void replaceSecondWithMaxNegative(int arr[], int n) {
-    int maxNegative = INT_MIN; // Инициализируем максимальное отрицательное значение
-    int maxNegativeIndex = -1;
+    if (n < 2) {
+        cout << "Массив слишком мал для замены второго элемента." << endl;
+        return;
+    }
+    int maxNegative = INT_MIN;
+    bool foundNegative = false;
 
-    for (size_t = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         if (arr[i] < 0 && arr[i] > maxNegative) {
             maxNegative = arr[i];
-            maxNegativeIndex = i;
+            foundNegative = true;
         }
     }
 
-    if (maxNegativeIndex != -1) {
+    if (foundNegative) {
         arr[1] = maxNegative;
     }
 }
 
-void printIndexesGreaterThana(int arr[], int n, int a) {
-    for (size_t = 0; i < n; ++i) {
+void printIndexesGreaterThana(const int arr[], const int n, const int a) {
+    cout << "Индексы элементов, больше " << a << ":" << endl;
+    for (int i = 0; i < n; i++) {
         if (arr[i] > a) {
-            cout << "Индекс " << i << ": " << arr[i] << endl;
+            cout << i << " ";
         }
     }
+    cout << endl;
 }
 
 void fillArray(int* arr, const int n, const int min, const int max) {
-    for (size_t i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         cout << "Введите значение для arr[" << i << "]: ";
         arr[i] = getNumber();
-
         if (arr[i] < min || arr[i] > max) {
-            cout << "Значение вне диапазона" << endl;
-            i--;
+            cout << "Значение вне диапазона. Попробуйте снова." << endl;
+            i--; // Декремент i для повторного ввода значения
         }
     }
 }
