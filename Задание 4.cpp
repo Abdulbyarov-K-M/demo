@@ -3,7 +3,6 @@
 #include <iomanip>
 using namespace std;
 
-
 /*
 @brief Проверяет положительные ли значения
  * @param n-число
@@ -38,28 +37,37 @@ int main()
 {
     cout << "Введите минимальный предел";
     double minValue = getNumber();
-    checkN(minValue);
     cout << "Введите максимальный предел";
     double maxValue = getNumber();
-    checkN(maxValue);
     checkRange(minValue, maxValue);
     cout << "Введите шаг";
     double step = getNumber();
     checkN(step);
     printTabFunction(minValue, maxValue, step);
+
     return 0;
 }
 
 
 void printTabFunction(const double minValue, const double maxValue, const double step)
 {
+    if (minValue + step > maxValue) {
+        cout << "Шаг выходит за пределы максимального значения." << endl;
+        return;
+    }
+
     cout << setw(10) << "x" << setw(15) << "y" << endl;
-    for (double i = minValue; i < maxValue + step; i = i + step)
+    for (double i = minValue; i <= maxValue; i += step)
     {
+        if (i > maxValue) {
+            cout << "Значение x выходит за пределы максимального значения." << endl;
+            break;
+        }
         double a = 3 * sin(sqrt(i)) + 0.39 * i - 3.8;
         cout << setw(10) << i << setw(15) << a << endl;
     }
 }
+
 double getNumber()
 {
     double a;
@@ -80,6 +88,7 @@ void checkN(const double n)
         abort();
     }
 }
+
 void checkRange(const double min, const double max)
 {
     if (min > max)
