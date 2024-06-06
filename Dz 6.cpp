@@ -123,7 +123,7 @@ int main() {
 
     int a;
     cout << "Введите значение a: ";
-    a = getNumber();
+    int a = getNumber();
     printIndGreaterA(arr, n, a);
 
     replaceSMaxNegative(arr, n);
